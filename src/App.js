@@ -1,37 +1,47 @@
-import "./styles.css";
+import { useEffect, useMemo, useState } from "react";
 import Table from "./components/Table";
-import { useMemo } from "react";
-import data from "./users.json";
-
+import "./styles.css";
+import dataJSON from "./users.json";
 export default function App() {
+  const [data, setData] = useState(() => ([...dataJSON]));
+
+
+  useEffect(() => {
+  }, [data])
   const columns = useMemo(
     () => [
-      {
-        Header: "ID",
-        accessor: "id",
-      },
+      
       {
         Header: "Name",
         accessor: "name",
       },
       {
-        Header: "Username",
-        accessor: "username",
+        Header : "CHR-A",
+        accessor : "chr-a"
       },
       {
-        Header: "Email",
-        accessor: "email",
+        Header : "CHR-B",
+        accessor : "chr-b"
       },
       {
-        Header: "Phone",
-        accessor: "phone",
+        Header : "CHR-C",
+        accessor : "chr-c"
       },
+      {
+        Header : "CHR-D",
+        accessor : "chr-d"
+      },
+      {
+        Header : "CHR-E",
+        accessor : "chr-e"
+      }
     ],
+
     []
   );
   return (
     <div className="App">
-      <Table columns={columns} data={data} />
+      {data && <Table columns={columns} data={data?.slice(0,3)} setData={setData} />}
     </div>
   );
 }

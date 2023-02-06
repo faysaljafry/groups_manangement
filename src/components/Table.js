@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useRef } from "react";
+import { Form } from "react-bootstrap";
 import { useTable } from "react-table";
 
 const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
@@ -19,7 +20,9 @@ const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
   );
 });
 
-const Table = ({ columns, data }) => {
+
+
+const Table = ({ columns, data, setData }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -32,6 +35,22 @@ const Table = ({ columns, data }) => {
     columns,
     data,
   });
+
+  function handleCheckboxChange(cellId, rowId) {
+    setData((old) => {
+      const newData = old.map((row) => {
+        debugger
+        if (row.id - 1 === parseInt(rowId)) {
+          return {
+            ...row,
+            [cellId]: !row[cellId],
+          };
+        }
+        return row;
+      });
+      return newData;
+    })
+  } 
 
   // Render the UI for your table
   return (
@@ -53,11 +72,20 @@ const Table = ({ columns, data }) => {
       </div>
       {/* Table Start */}
       <table {...getTableProps()}>
-        <thead>
+        <thead
+          className=""
+        >
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+                <th {...column.getHeaderProps()}>{column.render("Header")}
+                  <Form.Control
+
+                    type="checkbox"
+                    
+                  />
+
+                </th>
               ))}
             </tr>
           ))}
@@ -68,8 +96,18 @@ const Table = ({ columns, data }) => {
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
+                  
                   return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <td {...cell.getCellProps()}>{
+                      typeof cell.value === typeof true ? (
+                        <Form.Check
+                          type="checkbox"
+                          checked={cell.value}
+                          onChange={() => {
+                            handleCheckboxChange(cell.column.id, row.id);
+                          }}
+                        />
+                      ) : cell.value}</td>
                   );
                 })}
               </tr>

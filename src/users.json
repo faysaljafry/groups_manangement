@@ -4,23 +4,11 @@
     "name": "Leanne Graham",
     "username": "Bret",
     "email": "Sincere@april.biz",
-    "address": {
-      "street": "Kulas Light",
-      "suite": "Apt. 556",
-      "city": "Gwenborough",
-      "zipcode": "92998-3874",
-      "geo": {
-        "lat": "-37.3159",
-        "lng": "81.1496"
-      }
-    },
-    "phone": "1-770-736-8031 x56442",
-    "website": "hildegard.org",
-    "company": {
-      "name": "Romaguera-Crona",
-      "catchPhrase": "Multi-layered client-server neural-net",
-      "bs": "harness real-time e-markets"
-    }
+    "chr-a" : true,
+    "chr-b" : false,
+    "chr-c" : true,
+    "chr-d" : false,
+    "chr-e" : true
   },
   {
     "id": 2,
@@ -43,11 +31,16 @@
       "name": "Deckow-Crist",
       "catchPhrase": "Proactive didactic contingency",
       "bs": "synergize scalable supply-chains"
-    }
+    },
+    "chr-a" : true,
+    "chr-b" : true,
+    "chr-c" : false,
+    "chr-d" : true,
+    "chr-e" : true
   },
   {
     "id": 3,
-    "name": "Clementine Bauch",
+    "name": "===> Clementine Bauch",
     "username": "Samantha",
     "email": "Nathan@yesenia.net",
     "address": {
@@ -66,7 +59,12 @@
       "name": "Romaguera-Jacobson",
       "catchPhrase": "Face to face bifurcated interface",
       "bs": "e-enable strategic applications"
-    }
+    },
+    "chr-a" : false,
+    "chr-b" : true,
+    "chr-c" : true,
+    "chr-d" : false,
+    "chr-e" : true
   },
   {
     "id": 4,
