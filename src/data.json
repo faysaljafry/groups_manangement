@@ -1,0 +1,54 @@
+{
+  "contacts": [
+    {
+      "id": "43949439494949",
+      "firstName": "Muhammad Faisal",
+      "mainContact": true,
+      "hasAddress": true,
+      "spouseContact": false,
+      "hadEmail": true,
+      "spouse": {
+        "firstName": "Suzie",
+        "lastName": "Mclain",
+        "id": "43949439494949"
+      },
+      "groups": [
+        {
+          "name": "CHR-A",
+          "id": 349438943984389
+        },
+        {
+          "name": "CHR-Email Blast",
+          "id": 5435335355
+        },
+        {
+          "name": "CHR-Market Mailer",
+          "id": 5435335355
+        },
+        {
+          "name": "CHR-Notepad",
+          "id": 5435335355
+        }
+      ]
+    },
+    {
+      "id": "43949439494949",
+      "firstName": "Martin ",
+      "spouse": {
+        "firstName": "Mrs. Martin",
+        "lastName": "Luther King",
+        "id": "43949439494949"
+      },
+      "groups": [
+        {
+          "name": "CHR-A",
+          "id": 349438943984389
+        },
+        {
+          "name": "CHR-Market Mailer",
+          "id": 5435335355
+        }
+      ]
+    }
+  ]
+}
