@@ -1,91 +1,82 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState } from 'react';
-// import 'react-table/react-table.css';
-import Multiselect from 'multiselect-react-dropdown';
-import './App.css';
-import Table from './components/Table';
-import response from './data.json';
-function App() {
-
-  const [columns, setColumns] = useState([
-    {
-      name: 'Name',
-      accessor: 'firstName',
-      show: true,
-    },
-    {
-      name: 'CHR-A',
-      accessor: 'chr-a',
-      show: false,
-    },
-    {
-      name: 'CHR-B',
-      accessor: 'chr-b',
-      show: true, 
-    },
-    {
-      name: 'CHR-Email Blast',
-      accessor: 'chr-email-blast',
-      show: true,
-    },
-    {
-      name: 'CHR-Market Mailer',
-      accessor: 'chr-market-mailer',
-      show: true,
-    },{
-      name: 'CHR-Notepad',
-      accessor: 'chr-notepad',
-      show: true,
-    }
-  ]);
-  const [data, setData] = useState(response.contacts);
+import { useEffect, useMemo, useState } from "react";
+import Table from "./components/Table";
+import "./styles.css";
+import dataJSON from "./users.json";
+export default function App() {
+  const [data, setData] = useState(() => ([...dataJSON]));
 
 
+  useEffect(() => {
+  }, [data])
+  const columns = useMemo(
+    () => [
+      
+      {
+        Header: "Name",
+        accessor: "name",
+      },
+      {
+        Header : "CHR-A",
+        accessor : "chr-a"
+      },
+      {
+        Header : "CHR-B",
+        accessor : "chr-b"
+      },
+      {
+        Header : "CHR-C",
+        accessor : "chr-c"
+      },
+      {
+        Header : "CHR-D",
+        accessor : "chr-d"
+      },
+      {
+        Header : "CHR-E",
+        accessor : "chr-e"
+      },
+      {
+        Header : "CHR-F",
+        accessor : "chr-f"
+      },
+      {
+        Header : "CHR-G",
+        accessor : "chr-g"
 
-  const handleSelectionChange = (e) => {
-    debugger
-    const newColumns = columns.map((column) => {
-      if (e.some((item) => item.name === column.name)) {
-        return { ...column, show: true };
-      } else {
-        return { ...column, show: false };
+      },
+      {
+        Header : "CHR-H",
+        accessor : "chr-h"
+      },
+      {
+        Header : "CHR-I",
+        accessor : "chr-i"
+      },{
+        Header : "CHR-J",
+        accessor : "chr-j"
+
+      },
+      {
+        Header : "CHR-K",
+        accessor : "chr-k"
       }
-    });
-    setColumns(newColumns);
-    
-  }
-
+    ],
+    []
+  );
   return (
-    <div className="App">
-      <div className='header'>
-        <h3>Groups Management</h3>
-      </div> 
-      <div className=''>
-        <div className='d-flex'>
-              <div>
-                <h4>Groups</h4>
-                <Multiselect
-                  style={{
-                    option: {
-                      color: 'black',
-                    }
-                  }}
-                  options={columns}
-                  displayValue="name"
-                  onSelect={handleSelectionChange}
-                  onRemove={handleSelectionChange}
-                  selectedValues={columns.filter((column) => column.show)}
-                  showCheckbox={true}
-                />
-              </div>
-              
-        </div>
-        <div>
-          <Table data={data} columns={columns} />
-        </div>
+
+    <div className="container container-fluid">
+      <div className='d-flex bd-highlight'> {data && <Table columns={columns} data={data?.slice(0,3)} setData={setData} />}</div>
+      <div className='mt-1'>
+        <button className='btn btn-primary w-25' onClick={() => setData((old) => [...old, ...dataJSON])}>Add Group</button>
+      </div>
+      <div className='mt-1'>
+        <button className='btn btn-danger w-25' onClick={() => setData((old) => old.slice(0, 3))}>Edit Group</button>
+      </div>
+      <div className='mt-1'>
+        <button className='btn btn-success w-25' onClick={() => setData((old) => old.slice(0, 3))}>Group Email</button>
       </div>
     </div>
   );
 }
-
-export default App;
