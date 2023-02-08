@@ -50,3 +50,57 @@
 [info] [2023-01-18T10:01:24.067Z] :  ==> app\static\js\main.faeb03ee.js.map
 [info] [2023-01-18T10:01:24.068Z] :  ==> app\static\js\main.fbe7ab96.js.map
 [info] [2023-01-18T10:01:24.069Z] : Note - File formats that can be packed are: txt, md, xml, dre, jpg, jpeg, png, gif, css, js, html, json, mp3, svg, woff, ttf, eot, webm, mp4, and woff2
+[error] [2023-02-07T16:27:37.354Z] : × Below file formats are not allowed in Sigma
+[info] [2023-02-07T16:27:37.356Z] :  ==> app\static\css\main.b9aafca2.css.map
+[info] [2023-02-07T16:27:37.357Z] :  ==> app\static\js\787.ac21a5b5.chunk.js.map
+[info] [2023-02-07T16:27:37.358Z] :  ==> app\static\js\main.05ac33e2.js.map
+[info] [2023-02-07T16:27:37.358Z] :  ==> app\static\js\main.080bec67.js.map
+[info] [2023-02-07T16:27:37.359Z] :  ==> app\static\js\main.1f7dec53.js.map
+[info] [2023-02-07T16:27:37.360Z] :  ==> app\static\js\main.2434ba86.js.map
+[info] [2023-02-07T16:27:37.360Z] :  ==> app\static\js\main.3da8bcee.js.map
+[info] [2023-02-07T16:27:37.361Z] :  ==> app\static\js\main.458bea5c.js.map
+[info] [2023-02-07T16:27:37.362Z] :  ==> app\static\js\main.55f725f5.js.map
+[info] [2023-02-07T16:27:37.362Z] :  ==> app\static\js\main.6245bc19.js.map
+[info] [2023-02-07T16:27:37.363Z] :  ==> app\static\js\main.63cac817.js.map
+[info] [2023-02-07T16:27:37.363Z] :  ==> app\static\js\main.726cc0f3.js.map
+[info] [2023-02-07T16:27:37.364Z] :  ==> app\static\js\main.86068872.js.map
+[info] [2023-02-07T16:27:37.365Z] :  ==> app\static\js\main.8bb93f91.js.map
+[info] [2023-02-07T16:27:37.365Z] :  ==> app\static\js\main.93f2fd69.js.map
+[info] [2023-02-07T16:27:37.366Z] :  ==> app\static\js\main.a8c9c029.js.map
+[info] [2023-02-07T16:27:37.366Z] :  ==> app\static\js\main.b08a0b2b.js.map
+[info] [2023-02-07T16:27:37.367Z] :  ==> app\static\js\main.b0bdfea2.js.map
+[info] [2023-02-07T16:27:37.368Z] :  ==> app\static\js\main.c10d7044.js.map
+[info] [2023-02-07T16:27:37.368Z] :  ==> app\static\js\main.ec82a125.js.map
+[info] [2023-02-07T16:27:37.369Z] :  ==> app\static\js\main.f35f82cc.js.map
+[info] [2023-02-07T16:27:37.370Z] :  ==> app\static\js\main.f45cec48.js.map
+[info] [2023-02-07T16:27:37.370Z] :  ==> app\static\js\main.f4b97d2e.js.map
+[info] [2023-02-07T16:27:37.371Z] :  ==> app\static\js\main.faeb03ee.js.map
+[info] [2023-02-07T16:27:37.371Z] :  ==> app\static\js\main.fbe7ab96.js.map
+[info] [2023-02-07T16:27:37.372Z] : Note - File formats that can be packed are: txt, md, xml, dre, jpg, jpeg, png, gif, css, js, html, json, mp3, svg, woff, ttf, eot, webm, mp4, and woff2
+[error] [2023-02-07T16:27:37.382Z] : × Below file formats are not allowed in Sigma
+[info] [2023-02-07T16:27:37.382Z] :  ==> app\static\css\main.b9aafca2.css.map
+[info] [2023-02-07T16:27:37.383Z] :  ==> app\static\js\787.ac21a5b5.chunk.js.map
+[info] [2023-02-07T16:27:37.383Z] :  ==> app\static\js\main.05ac33e2.js.map
+[info] [2023-02-07T16:27:37.384Z] :  ==> app\static\js\main.080bec67.js.map
+[info] [2023-02-07T16:27:37.384Z] :  ==> app\static\js\main.1f7dec53.js.map
+[info] [2023-02-07T16:27:37.385Z] :  ==> app\static\js\main.2434ba86.js.map
+[info] [2023-02-07T16:27:37.385Z] :  ==> app\static\js\main.3da8bcee.js.map
+[info] [2023-02-07T16:27:37.386Z] :  ==> app\static\js\main.458bea5c.js.map
+[info] [2023-02-07T16:27:37.386Z] :  ==> app\static\js\main.55f725f5.js.map
+[info] [2023-02-07T16:27:37.387Z] :  ==> app\static\js\main.6245bc19.js.map
+[info] [2023-02-07T16:27:37.388Z] :  ==> app\static\js\main.63cac817.js.map
+[info] [2023-02-07T16:27:37.388Z] :  ==> app\static\js\main.726cc0f3.js.map
+[info] [2023-02-07T16:27:37.389Z] :  ==> app\static\js\main.86068872.js.map
+[info] [2023-02-07T16:27:37.390Z] :  ==> app\static\js\main.8bb93f91.js.map
+[info] [2023-02-07T16:27:37.390Z] :  ==> app\static\js\main.93f2fd69.js.map
+[info] [2023-02-07T16:27:37.391Z] :  ==> app\static\js\main.a8c9c029.js.map
+[info] [2023-02-07T16:27:37.391Z] :  ==> app\static\js\main.b08a0b2b.js.map
+[info] [2023-02-07T16:27:37.392Z] :  ==> app\static\js\main.b0bdfea2.js.map
+[info] [2023-02-07T16:27:37.392Z] :  ==> app\static\js\main.c10d7044.js.map
+[info] [2023-02-07T16:27:37.393Z] :  ==> app\static\js\main.ec82a125.js.map
+[info] [2023-02-07T16:27:37.394Z] :  ==> app\static\js\main.f35f82cc.js.map
+[info] [2023-02-07T16:27:37.394Z] :  ==> app\static\js\main.f45cec48.js.map
+[info] [2023-02-07T16:27:37.395Z] :  ==> app\static\js\main.f4b97d2e.js.map
+[info] [2023-02-07T16:27:37.395Z] :  ==> app\static\js\main.faeb03ee.js.map
+[info] [2023-02-07T16:27:37.396Z] :  ==> app\static\js\main.fbe7ab96.js.map
+[info] [2023-02-07T16:27:37.396Z] : Note - File formats that can be packed are: txt, md, xml, dre, jpg, jpeg, png, gif, css, js, html, json, mp3, svg, woff, ttf, eot, webm, mp4, and woff2
