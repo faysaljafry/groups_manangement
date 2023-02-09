@@ -1,5 +1,5 @@
 :root {
-  --primary: #0bbdd5;
+  --primary: #172239;;
 }
 
 
@@ -12,15 +12,16 @@ table {
 
 td, th {
   border: 1px solid var(--primary);
-  text-align: left;
+  text-align: center;
   padding: 8px;
 }
 th{
+  
   color: var(--primary);
 }
 
 tr:nth-child(even) {
-  background-color: grey;
+  background-color:#323949;
   color: #fff;
 }
 

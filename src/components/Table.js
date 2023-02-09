@@ -46,6 +46,10 @@ const Table = ({ columns, data, setData }) => {
   }, [filters])
 
   useEffect(() => {
+    console.log("Data", data);
+  }, [data])
+
+  useEffect(() => {
     console.log("Selected Options", selectedOptions);
     filterData();
   }, [selectedOptions]);
@@ -92,21 +96,23 @@ const Table = ({ columns, data, setData }) => {
   }
 
   function handleCheckboxChange(cellId, rowId) {
-    setData((old) => {
-      const newData = old.map((row) => {
-        if (row.id - 1 === parseInt(rowId)) {
-          return {
-            ...row,
-            [cellId]: !row[cellId],
-          };
-        }
-        return row;
-      });
-      return newData;
-    })
-  } 
+    debugger
+    const newData = unfilteredData.map((row, index) => {
+      if (index === parseInt(rowId)) {
+        return {
+          ...row,
+          [cellId]: !row[cellId],
+        };
+      }
+      return row;
+
+    });
+    setData(newData);
+    debugger
+  }
 
   function toggleAll(columnAccessorKey, value) {
+    
     //selectall/ deselect all the checkboxes in the column in the unfilteredData based on the columnAccessorKey
     const newData = unfilteredData.map((row) => {
       return {
@@ -117,8 +123,10 @@ const Table = ({ columns, data, setData }) => {
     });
     setUnfilteredData(newData);
     setData(newData);
+    debugger
     }
 
+  
   // Render the UI for your table
   return (
     <>
@@ -142,16 +150,16 @@ const Table = ({ columns, data, setData }) => {
      
      <table className="table table-group-divider" {...getTableProps()}>
         <thead
-          className=""
         >
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <tr  {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}
+                <th style={{backgroundColor: "#172239", color : "white"}} {...column.getHeaderProps()}>{column.render("Header")}
                    {column.render("Header") !== "Name" ? <Form.Check
                     type="checkbox"
                     checked={column.isAllSelected}
                     onChange={(e) => {
+                      debugger
                       toggleAll(column.id, e.target.checked );
                     }}
                   /> : null}
