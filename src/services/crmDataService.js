@@ -17,3 +17,23 @@ export async function getContacts() {
         }
         );
 }
+
+export async function updateGroups(data) {
+    return await ZOHO.CRM.FUNCTIONS.execute('update_group', {data : data}).then((data) => { 
+        debugger
+        return data
+        }).catch((error) => {
+            console.log(error);
+        }
+        );
+}
+
+export async function createNewgroup (group) {
+    return await ZOHO.CRM.FUNCTIONS.execute('create_group', {group: group}).then((data) => { 
+        
+        return data
+        }).catch((error) => {
+            console.log(error);
+        }
+        );
+}

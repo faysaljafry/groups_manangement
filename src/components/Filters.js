@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Table } from "react-bootstrap";
 
 export default function Filters({ options, setSelectedOption }) {
+  
   useEffect(() => {
     console.log("Options from filters", options);
   }, [options]);
@@ -28,7 +29,7 @@ export default function Filters({ options, setSelectedOption }) {
             {options.map((option, index) => {
                 return (
                     <tr key={index}>
-                        <td className="" style={{width: '100px'}}>{option.name}</td>
+                        <td className="" style={{width: '100px'}}>{option.Header}</td>
                         <td>
                             <input type="checkbox" onChange={(e) => {
                               handleCheckboxChange(e, option, setSelectedOption)

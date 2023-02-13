@@ -1,18 +1,40 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { createNewgroup } from '../../services/crmDataService';
 
-function AddGroupModal({ show, handleClose, handleSave}) {
+// const buttonStyle = {
+//   backgroundColor: "#172239",
+// } 
+
+function AddGroupModal({style, show, handleClose}) {
 
   const [group, setGroup] = React.useState('');
+
+
   function handleChange(event) {
         
         setGroup(event.target.value);
-        handleSave(event.target.value);
+        
     }
 
     function handleDismiss() {
-        handleClose()
+      setGroup('');  
+      handleClose();
+
+    }
+
+
+    function handleSave () {
+
+      let data = {
+        group_name : group
+      }
+
+      createNewgroup(JSON.stringify(data)).then((response) => {
+        setGroup('');
+        handleClose();
+      })
     }
     
   return (
@@ -30,10 +52,10 @@ function AddGroupModal({ show, handleClose, handleSave}) {
             <input value={group} onChange={handleChange} className="form-control" rows="5" id="comment"></input>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleDismiss}>
+          <Button variant='secondary' style={style} onClick={handleDismiss}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSave}>
+          <Button variant="primary" style={style} onClick={handleSave}>
             Save Changes
           </Button>
         </Modal.Footer>

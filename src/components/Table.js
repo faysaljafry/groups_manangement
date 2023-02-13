@@ -3,6 +3,7 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useTable } from "react-table";
+import { updateGroups } from "../services/crmDataService";
 import Filters from "./Filters";
 
 const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
@@ -37,8 +38,8 @@ const Table = ({ columns, data, setData }) => {
     data
   });
   
-  const [filters, setFilters] = useState(makeFilters());
-  const [unfilteredData, setUnfilteredData] = useState([...data]);
+  const [filters, setFilters] = useState([]);
+  const [unfilteredData, setUnfilteredData] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   useEffect(() => {
@@ -47,6 +48,12 @@ const Table = ({ columns, data, setData }) => {
 
   useEffect(() => {
     console.log("Data", data);
+    if(unfilteredData.length === 0) {
+      setUnfilteredData(data);
+    }
+    if(data) {
+      makeFilters();
+    }
   }, [data])
 
   useEffect(() => {
@@ -56,6 +63,7 @@ const Table = ({ columns, data, setData }) => {
 
   function filterData() {
     if(selectedOptions.length === 0) {
+
       setData(unfilteredData);
       return;
     }else {
@@ -73,31 +81,41 @@ const Table = ({ columns, data, setData }) => {
   }
 
   function makeFilters() {
-    const filters = [];
-    for (const key in data[0]) {
-      if (key.startsWith("has") || key.startsWith("chr")) {
-        if (key.startsWith("has")) {
-          const newKey = key.replace("has", "has ");
-          filters.push({
-            name: newKey,
-            accessor: key,
-          });
-        }else {
-          //capitalize the string
-          const newKey = key.toUpperCase();
-        filters.push({
-          name: newKey,
-          accessor: key,
-        });
-      }
-      }
-    }
-    return filters;
+    setFilters(columns);
   }
 
   function handleCheckboxChange(cellId, rowId) {
-    debugger
-    const newData = unfilteredData.map((row, index) => {
+
+    let newData = unfilteredData.map((row, index) => {
+      if (index === parseInt(rowId)) {
+
+        let data = []
+
+        let record = {
+          contact_id : row.contact_id,
+          group_id : columns.filter((column) => column.accessor === cellId)[0].group_id,
+          flag : !row[cellId]
+        }
+
+        data.push(record)
+        updateGroups(JSON.stringify(data)).then((res) => {
+          console.log(res);
+          
+        })
+        
+        
+
+        return {
+          ...row,
+          [cellId]: !row[cellId],
+        };
+      }
+      return row;
+
+    });    
+    setUnfilteredData(newData);
+
+    newData = data.map((row, index) => {
       if (index === parseInt(rowId)) {
         return {
           ...row,
@@ -108,23 +126,45 @@ const Table = ({ columns, data, setData }) => {
 
     });
     setData(newData);
-    debugger
   }
 
   function toggleAll(columnAccessorKey, value) {
     
     //selectall/ deselect all the checkboxes in the column in the unfilteredData based on the columnAccessorKey
-    const newData = unfilteredData.map((row) => {
+    //this operation will take place for the unfilteredData that is preserved from filters
+    let newData = unfilteredData.map((row) => {
       return {
         ...row,
         [columnAccessorKey]: value,
       }
-
     });
     setUnfilteredData(newData);
+
+   
+    //this operation will take place for the data that is being shown on the screen (filtered data)
+    newData = data.map((row) => {
+      return {
+        ...row,
+        [columnAccessorKey]: value,
+      }
+    })
+  
     setData(newData);
-    debugger
-    }
+  
+    let dataArray = []
+    newData.forEach((row) => {
+      let record = {
+        contact_id : row.contact_id,
+        group_id : columns.filter((column) => column.accessor === columnAccessorKey)[0].group_id,
+        flag : value
+      }
+      dataArray.push(record)
+    })
+    updateGroups(JSON.stringify(dataArray)).then((res) => {
+      console.log(res);
+      debugger
+    })
+  }
 
   
   // Render the UI for your table
@@ -136,7 +176,7 @@ const Table = ({ columns, data, setData }) => {
       </div>
       <div className=" w-75">
         {/* Loop through columns data to create checkbox */}
-        {allColumns.slice(1).map((column) => (
+        {allColumns.slice(1, allColumns.length - 2).map((column) => (
           <div className="cb action" key={column.id}>
             <label>
               <input type="checkbox" {...column.getToggleHiddenProps()} />{" "}
@@ -153,13 +193,12 @@ const Table = ({ columns, data, setData }) => {
         >
           {headerGroups.map((headerGroup) => (
             <tr  {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
+              {headerGroup.headers.slice(0, headerGroup.headers.length - 2).map((column) => (
                 <th style={{backgroundColor: "#172239", color : "white"}} {...column.getHeaderProps()}>{column.render("Header")}
                    {column.render("Header") !== "Name" ? <Form.Check
                     type="checkbox"
                     checked={column.isAllSelected}
                     onChange={(e) => {
-                      debugger
                       toggleAll(column.id, e.target.checked );
                     }}
                   /> : null}
@@ -173,7 +212,7 @@ const Table = ({ columns, data, setData }) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
+                {row.cells.slice(0, row.cells.length - 2).map((cell) => {
                   
                   return (
                     <td {...cell.getCellProps()}>{

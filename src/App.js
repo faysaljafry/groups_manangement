@@ -29,11 +29,22 @@ export default function App() {
             let responseParsed = JSON.parse(response.details.output);
             /*the column start from here */
             let groups = responseParsed.all_groups.map((group) => {
-              return {
-                Header: group,
-                accessor: group.toLowerCase()
+              if(typeof group === "object"){
+                return {
+                  Header: group.group_name,
+                  accessor: group.group_name.toLowerCase(),
+                  group_id : group.group_id
+                }
+              }else {
+                return {
+                  Header: group,
+                  accessor: group.toLowerCase(),
+                  group_id : null
+                }
               }
-            })
+
+              })
+              
             //append the name column at the start
             groups.unshift({
               Header: "Name",
@@ -81,7 +92,7 @@ export default function App() {
   return (
     data && (
     <div className="container container-fluid">
-      <div className='d-flex bd-highlight'> {data && <Table columns={columns} data={data.slice(0,7)} setData={setData} />}</div>
+      <div className='d-flex bd-highlight'> {data && <Table columns={columns} data={data.slice(0, 8)} setData={setData} />}</div>
       <div className='mt-1'>
         <button className='btn btn-primary w-25' style={buttonStyle} onClick={() => setShowAddModal(true)}>Add Group</button>
       </div>
