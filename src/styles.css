@@ -16,7 +16,6 @@ td, th {
   padding: 8px;
 }
 th{
-  
   color: var(--primary);
 }
 
@@ -25,6 +24,10 @@ tr:nth-child(even) {
   color: #fff;
 }
 
+tr:nth-child(even) :hover{
+  background-color: #323949;
+  color: #fff;
+}
 
 /* Checkbox style */
 

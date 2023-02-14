@@ -1,32 +1,37 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from "react";
-import AddGroupModal from './components/notesModal';
 import Table from "./components/Table";
 import { getContacts } from "./services/crmDataService";
 import "./styles.css";
 import { ZOHO } from "./vendor/ZSDK";
 
-const buttonStyle = {
-  backgroundColor: "#172239",
-}
+
 export default function App() {
   const [data, setData] = useState(() => []);
-  const [showAddModal, setShowAddModal] = useState(false);
   const [columns, setColumns] = useState([]);
+  const [args, setArguments] = useState([]);
+  const [email, setEmail] = useState('');
 
 
   useEffect(() => {
+    console.log("Data from app.js", data);
   }, [data])
 
+  useEffect(() => {
+    //update the data when a column is updated
+    
+  })
+
 
   useEffect(() => {
-    
     async function initializeSDK(){
       ZOHO.embeddedApp.on("PageLoad", async function (data) {
         ZOHO.CRM.UI.Resize({ width: "100%", height: "80%"})
         ZOHO.CRM.CONFIG.getCurrentUser().then(async function(data){
-          await getContacts().then((response) => {
+          setEmail(data.users[0].email);
+          await getContacts(JSON.stringify({email: data.users[0].email, page: "0"})).then((response) => {
             let responseParsed = JSON.parse(response.details.output);
+            setArguments({email: data.users[0].email, page: responseParsed.page});
             /*the column start from here */
             let groups = responseParsed.all_groups.map((group) => {
               if(typeof group === "object"){
@@ -88,27 +93,34 @@ export default function App() {
     initializeSDK();
   }, [])
 
+  function addOrEditColumns(column) {
+
+    
+    let newColumns = columns;
+    let index = newColumns.findIndex((col) => col.accessor === column.accessor);
+    if(index < newColumns.length ) {
+      //put the column at the third postion from the last 
+      newColumns.splice(newColumns.length - 2, 0, column);
+      //update the data for new added column and set its value to false
+      let newData = data;
+      data.slice(0,5).forEach((contact) => {
+        if(contact[column.accessor] === undefined || contact[column.accessor] === null) {
+          contact[column.accessor] = false;
+        }
+      })
+      setData(newData);      
+    }else {
+      newColumns[index] = column;
+    }
+    debugger
+    setColumns(newColumns);
+  }
+
 
   return (
     data && (
     <div className="container container-fluid">
-      <div className='d-flex bd-highlight'> {data && <Table columns={columns} data={data.slice(0, 8)} setData={setData} />}</div>
-      <div className='mt-1'>
-        <button className='btn btn-primary w-25' style={buttonStyle} onClick={() => setShowAddModal(true)}>Add Group</button>
-      </div>
-      <div className='mt-1'>
-        <button className='btn btn-primary w-25' style={buttonStyle} onClick={() => {}}>Edit Group</button>
-      </div>
-      <div className='mt-1'>
-        <button className='btn btn-primary w-25' style={buttonStyle} onClick={() => {}}>Group Email</button>
-      </div>
-      <AddGroupModal
-        style = {
-          buttonStyle
-        }
-        show={showAddModal}
-        handleClose={() => setShowAddModal(false)}
-      ></AddGroupModal>
+      <div className='d-flex bd-highlight'> {data && <Table email={email} columns={columns} setColumns={(column) => addOrEditColumns(column)} data={data.slice(0, 8)} setData={setData} />}</div>
     </div>
     )
   );

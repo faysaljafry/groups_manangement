@@ -1,30 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useTable } from "react-table";
 import { updateGroups } from "../services/crmDataService";
-import Filters from "./Filters";
+import EditGroupModal from "./EditGroupModal";
+import { Filters } from "./Filters";
+import AddGroupModal from "./notesModal";
 
-const IndeterminateCheckbox = forwardRef(({ indeterminate, ...rest }, ref) => {
-  const defaultRef = useRef();
-  const resolvedRef = ref || defaultRef;
+const buttonStyle = {
+  backgroundColor: "#172239",
+}
 
-  useEffect(() => {
-    resolvedRef.current.indeterminate = indeterminate;
-  }, [resolvedRef, indeterminate]);
 
-  return (
-    <div className="cb action">
-      <label>
-        <input type="radio" ref={resolvedRef} {...rest} />
-        <span>All columns</span>
-      </label>
-    </div>
-  );
-});
+const Table = ({ columns, setColumns,  data, setData, email }) => {
 
-const Table = ({ columns, data, setData }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -32,19 +22,26 @@ const Table = ({ columns, data, setData }) => {
     rows,
     prepareRow,
     allColumns,
-    getToggleHideAllColumnsProps,
   } = useTable({
     columns,
     data
   });
+
+  //force the table to re-render when the columns change
+  useEffect(() => {
+    prepareRow(rows);
+  }, [columns]);
+
   
   const [filters, setFilters] = useState([]);
   const [unfilteredData, setUnfilteredData] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   useEffect(() => {
-    console.log("Filters", filters);
-  }, [filters])
+    console.log("columns from filters", columns);
+  }, [filters, columns])
 
   useEffect(() => {
     console.log("Data", data);
@@ -162,8 +159,18 @@ const Table = ({ columns, data, setData }) => {
     })
     updateGroups(JSON.stringify(dataArray)).then((res) => {
       console.log(res);
-      debugger
     })
+  }
+
+  function _updateGroups(data) {
+    
+    let newFitler  = {
+      Header: data,
+      accessor: data.toLowerCase(),
+    }
+    //add the same properties to allColumns as well
+    //insert the column at the third last position
+    setColumns(newFitler)
   }
 
   
@@ -172,11 +179,28 @@ const Table = ({ columns, data, setData }) => {
     <>
 
       <div className="w-25" >
-        {filters &&  <Filters options={filters} setSelectedOption={setSelectedOptions}/>}
+        {filters &&  <Filters options={filters} setSelectedOption={setSelectedOptions} setShowAddModal={setShowAddModal} setShowEditModal={setShowEditModal}/>}
+        <AddGroupModal
+        style = {
+          buttonStyle
+        }
+        show={showAddModal}
+        handleClose={() => setShowAddModal(false)}
+        updateGroups={(data) => _updateGroups(data)}
+      ></AddGroupModal>
+
+      <EditGroupModal
+        email={email}
+        show={showEditModal}
+        handleClose={() => setShowEditModal(false)}
+        updateGroups={(data) => _updateGroups(data)}
+        
+      />
+
       </div>
       <div className=" w-75">
         {/* Loop through columns data to create checkbox */}
-        {allColumns.slice(1, allColumns.length - 2).map((column) => (
+        {allColumns.slice(1, allColumns.length -2 ).map((column) => (
           <div className="cb action" key={column.id}>
             <label>
               <input type="checkbox" {...column.getToggleHiddenProps()} />{" "}
@@ -193,7 +217,7 @@ const Table = ({ columns, data, setData }) => {
         >
           {headerGroups.map((headerGroup) => (
             <tr  {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.slice(0, headerGroup.headers.length - 2).map((column) => (
+              {headerGroup.headers.slice(0, headerGroup.headers.length -2 ).map((column) => (
                 <th style={{backgroundColor: "#172239", color : "white"}} {...column.getHeaderProps()}>{column.render("Header")}
                    {column.render("Header") !== "Name" ? <Form.Check
                     type="checkbox"

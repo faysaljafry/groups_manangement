@@ -1,7 +1,19 @@
 import { useEffect } from "react";
-import { Table } from "react-bootstrap";
 
-export default function Filters({ options, setSelectedOption }) {
+//write the style for the tr hover here
+const trStyle = {
+  "&:hover": {
+    backgroundColor: "red",
+    color: "red",
+  },
+};
+
+const buttonStyle = {
+  backgroundColor: "#172239",
+}
+
+
+export function Filters({ options, setSelectedOption, setShowAddModal, setShowEditModal }) {
   
   useEffect(() => {
     console.log("Options from filters", options);
@@ -17,19 +29,20 @@ export default function Filters({ options, setSelectedOption }) {
 
   }
   return (
-    <div  style={{ paddingTop: "50px", marginRight: "20px"}}>
+    <>
+    <div style={{ paddingTop: "50px", marginRight: "20px"}}>
 
-      <Table bordered hover className="table-style">
+      <table bordered hover className="">
         <thead>
             <tr>
                 <th colSpan={2}>Filter</th>
                 </tr>
         </thead>
         <tbody>
-            {options.map((option, index) => {
+            {options.slice(1).map((option, index) => {
                 return (
-                    <tr key={index}>
-                        <td className="" style={{width: '100px'}}>{option.Header}</td>
+                    <tr style={trStyle} key={index}>
+                        <td style={{width: '100px'}}>{option.Header}</td>
                         <td>
                             <input type="checkbox" onChange={(e) => {
                               handleCheckboxChange(e, option, setSelectedOption)
@@ -40,7 +53,17 @@ export default function Filters({ options, setSelectedOption }) {
             }) }
         </tbody>
 
-      </Table>
+      </table>
     </div>
+    <div className='mt-1'>
+        <button className='btn btn-primary w-75' style={buttonStyle} onClick={() => { setShowAddModal(true)}}>Add Group</button>
+      </div>
+      <div className='mt-1'>
+        <button className='btn btn-primary w-75' style={buttonStyle} onClick={() => { setShowEditModal(true)}}>Edit Group</button>
+      </div>
+      <div className='mt-1'>
+        <button className='btn btn-primary w-75' style={buttonStyle} onClick={() => {}}>Group Email</button>
+      </div>
+      </>
   );
 }

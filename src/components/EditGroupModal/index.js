@@ -1,21 +1,36 @@
-import React from 'react';
+
+import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { createNewgroup } from '../../services/crmDataService';
+import { getGroups } from '../../services/crmDataService';
 
 // const buttonStyle = {
 //   backgroundColor: "#172239",
 // } 
 
-function AddGroupModal({style, show, handleClose, updateGroups}) {
+
+
+
+function EditGroupModal({email, style, show, handleClose, updateGroups}) {
 
   const [group, setGroup] = React.useState('');
 
 
-  function handleChange(event) {
-        
+
+  useEffect(() => {
+    _getGroups(email);
+  }, [email])
+
+  function _getGroups(email) {
+    let data = {
+        email : email
+    }
+    getGroups(JSON.stringify(data)).then((response) => {
+    })
+}
+  
+  function handleChange(event) {        
         setGroup(event.target.value);
-        
     }
 
     function handleDismiss() {
@@ -29,11 +44,6 @@ function AddGroupModal({style, show, handleClose, updateGroups}) {
       let data = {
         group_name : group
       }
-      createNewgroup(JSON.stringify(data)).then((response) => {
-        setGroup('');
-        handleClose();
-        updateGroups(group);
-      })
     }
     
   return (
@@ -66,4 +76,4 @@ function AddGroupModal({style, show, handleClose, updateGroups}) {
   );
 }
 
-export default AddGroupModal;
+export default EditGroupModal;

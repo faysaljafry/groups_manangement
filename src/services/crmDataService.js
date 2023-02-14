@@ -9,8 +9,8 @@ export async function invokeDummyFunction (id){
     );
 }
 
-export async function getContacts() {
-    return await ZOHO.CRM.FUNCTIONS.execute('groups_contact', {}).then((data) => { 
+export async function getContacts(object) {
+    return await ZOHO.CRM.FUNCTIONS.execute('groups_contact', {data : object}).then((data) => { 
         return data
         }).catch((error) => {
             console.log(error);
@@ -20,7 +20,6 @@ export async function getContacts() {
 
 export async function updateGroups(data) {
     return await ZOHO.CRM.FUNCTIONS.execute('update_group', {data : data}).then((data) => { 
-        debugger
         return data
         }).catch((error) => {
             console.log(error);
@@ -30,7 +29,16 @@ export async function updateGroups(data) {
 
 export async function createNewgroup (group) {
     return await ZOHO.CRM.FUNCTIONS.execute('create_group', {group: group}).then((data) => { 
-        
+
+        return data
+        }).catch((error) => {
+            console.log(error);
+        }
+        );
+}
+
+export async function getGroups(email) {
+    return await ZOHO.CRM.FUNCTIONS.execute('get_groups', {data : email}).then((data) => { 
         return data
         }).catch((error) => {
             console.log(error);
