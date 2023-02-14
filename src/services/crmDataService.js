@@ -19,7 +19,7 @@ export async function getContacts(object) {
 }
 
 export async function updateGroups(data) {
-    return await ZOHO.CRM.FUNCTIONS.execute('update_group', {data : data}).then((data) => { 
+    return await ZOHO.CRM.FUNCTIONS.execute('update_groups', {data : data}).then((data) => { 
         return data
         }).catch((error) => {
             console.log(error);
@@ -28,8 +28,7 @@ export async function updateGroups(data) {
 }
 
 export async function createNewgroup (group) {
-    return await ZOHO.CRM.FUNCTIONS.execute('create_group', {group: group}).then((data) => { 
-
+    return await ZOHO.CRM.FUNCTIONS.execute('create_groups', {data: group}).then((data) => {
         return data
         }).catch((error) => {
             console.log(error);

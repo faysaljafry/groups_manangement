@@ -32,6 +32,7 @@ function AddGroupModal({style, show, handleClose, updateGroups}) {
       createNewgroup(JSON.stringify(data)).then((response) => {
         setGroup('');
         handleClose();
+        let group = {group_name: data.group_name, group_id : response.details.output};
         updateGroups(group);
       })
     }

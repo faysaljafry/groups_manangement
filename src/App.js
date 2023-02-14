@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import Table from "./components/Table";
 import { getContacts } from "./services/crmDataService";
 import "./styles.css";
@@ -11,6 +11,7 @@ export default function App() {
   const [columns, setColumns] = useState([]);
   const [args, setArguments] = useState([]);
   const [email, setEmail] = useState('');
+  const [count, setCount] = useState();
 
 
   useEffect(() => {
@@ -18,9 +19,12 @@ export default function App() {
   }, [data])
 
   useEffect(() => {
-    //update the data when a column is updated
-    
-  })
+    console.log("count", count)
+  }, [count])
+  
+useEffect(() => {
+    console.log("columns from app.js", columns);
+}, [columns])
 
 
   useEffect(() => {
@@ -57,7 +61,7 @@ export default function App() {
             })
             //set the columns state to the groups
             setColumns(groups);
-
+            setCount(groups.length)
             /*the column formation ends here  */
             responseParsed?.all_contacts_groups.forEach((contact) => {
               if(contact.groups === undefined || contact.groups === null) {
@@ -93,34 +97,59 @@ export default function App() {
     initializeSDK();
   }, [])
 
-  function addOrEditColumns(column) {
-
-    
+  function addOrEditColumns(column, edit) {
+    debugger
     let newColumns = columns;
+    if(edit) {
+      let index = newColumns.findIndex((col) => col.group_id === column.group_id);
+      let oldColumn = newColumns[index];
+      newColumns[index].accessor = column.group_name.toLowerCase();
+      newColumns[index].Header = column.group_name;
+      setColumns(newColumns);
+      setCount(count + 1);
+      //update the data for edited column update key as well as value
+      let newData = data;
+      
+      data.slice(0, 3).forEach((contact) => {
+        if(contact[oldColumn.accessor] !== undefined) {
+          //update the key with the new name
+          contact[column.group_name.toLowerCase()] = contact[oldColumn.accessor];
+          //delete the old key
+          delete contact[oldColumn.accessor];
+        }
+      })
+      setData(newData);
+      return;
+    }
+    
     let index = newColumns.findIndex((col) => col.accessor === column.accessor);
-    if(index < newColumns.length ) {
+    if(index  === -1 ) {
       //put the column at the third postion from the last 
       newColumns.splice(newColumns.length - 2, 0, column);
       //update the data for new added column and set its value to false
       let newData = data;
-      data.slice(0,5).forEach((contact) => {
+      data.forEach((contact) => {
         if(contact[column.accessor] === undefined || contact[column.accessor] === null) {
           contact[column.accessor] = false;
         }
       })
-      setData(newData);      
+      
+      setColumns(newColumns);
+      setData(newData); 
+      setCount(newColumns.length);     
     }else {
-      newColumns[index] = column;
+      newColumns[index].accessor = column.group_name.toLowerCase();
+      newColumns[index].Header = column.group_name;
+      setColumns(newColumns);
     }
-    debugger
-    setColumns(newColumns);
+    // setColumns(newColumns);
   }
 
 
   return (
     data && (
     <div className="container container-fluid">
-      <div className='d-flex bd-highlight'> {data && <Table email={email} columns={columns} setColumns={(column) => addOrEditColumns(column)} data={data.slice(0, 8)} setData={setData} />}</div>
+      <div className='d-flex bd-highlight'> {data && <Table email={email} columns={columns.slice(0, count)} setColumns={ addOrEditColumns} data={data.slice(0, count)} setData={setData} />}</div>
     </div>
     )
   );

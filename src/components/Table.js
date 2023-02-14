@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useTable } from "react-table";
 import { updateGroups } from "../services/crmDataService";
@@ -15,6 +15,10 @@ const buttonStyle = {
 
 const Table = ({ columns, setColumns,  data, setData, email }) => {
 
+
+  const columnsMemo = useMemo(() => columns, [columns]);
+  const dataMemo = useMemo(() => data, [data]);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -23,14 +27,15 @@ const Table = ({ columns, setColumns,  data, setData, email }) => {
     prepareRow,
     allColumns,
   } = useTable({
-    columns,
-    data
-  });
+    columns: columnsMemo,
+    data: dataMemo,
+  })
 
   //force the table to re-render when the columns change
   useEffect(() => {
-    prepareRow(rows);
-  }, [columns]);
+    console.log("columns from", columnsMemo);
+    console.log(getTableProps());  
+  }, [columns, data]);
 
   
   const [filters, setFilters] = useState([]);
@@ -39,9 +44,10 @@ const Table = ({ columns, setColumns,  data, setData, email }) => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
+
   useEffect(() => {
     console.log("columns from filters", columns);
-  }, [filters, columns])
+  }, [filters])
 
   useEffect(() => {
     console.log("Data", data);
@@ -162,17 +168,33 @@ const Table = ({ columns, setColumns,  data, setData, email }) => {
     })
   }
 
-  function _updateGroups(data) {
+  function _addGroup(data) {
     
     let newFitler  = {
-      Header: data,
-      accessor: data.toLowerCase(),
+      Header: data.group_name,
+      accessor: data.group_name.toLowerCase(),
+      group_id: data.group_id
     }
     //add the same properties to allColumns as well
     //insert the column at the third last position
     setColumns(newFitler)
   }
 
+
+  function _updateGroups(data, editFlag){
+    //find the group in the columns and update the group name
+    let newColumns = columns.map((column) => {
+      if(column.group_id === data.group_id) {
+        return {
+          ...column,
+          Header: data.group_name,
+          accessor: data.group_name.toLowerCase()
+        }
+      }
+      return column;
+    })
+    setColumns(data, editFlag);
+  }
   
   // Render the UI for your table
   return (
@@ -186,21 +208,21 @@ const Table = ({ columns, setColumns,  data, setData, email }) => {
         }
         show={showAddModal}
         handleClose={() => setShowAddModal(false)}
-        updateGroups={(data) => _updateGroups(data)}
+        updateGroups={(data) => _addGroup(data)}
       ></AddGroupModal>
 
       <EditGroupModal
         email={email}
         show={showEditModal}
         handleClose={() => setShowEditModal(false)}
-        updateGroups={(data) => _updateGroups(data)}
+        updateGroups={ _updateGroups}
         
       />
 
       </div>
       <div className=" w-75">
         {/* Loop through columns data to create checkbox */}
-        {allColumns.slice(1, allColumns.length -2 ).map((column) => (
+        {allColumns.slice(0, allColumns.length -2 ).map((column) => (
           <div className="cb action" key={column.id}>
             <label>
               <input type="checkbox" {...column.getToggleHiddenProps()} />{" "}
@@ -236,7 +258,7 @@ const Table = ({ columns, setColumns,  data, setData, email }) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.slice(0, row.cells.length - 2).map((cell) => {
+                {row.cells.slice(0, row.cells.length -2 ).map((cell) => {
                   
                   return (
                     <td {...cell.getCellProps()}>{
